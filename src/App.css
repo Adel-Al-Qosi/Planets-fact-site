@@ -436,7 +436,7 @@ ul li::before{
   }
  
   .planet--extra--info .active{
-    background-color: #419EBB;
+    
     border-bottom:none;
     padding-bottom:1.2em;
     

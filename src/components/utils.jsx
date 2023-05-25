@@ -6,9 +6,19 @@ import icon from '../assets/icon-source.svg'
 
 
 function utils (num) {
-
-
+  const colors = [
+    '#419EBB', // Planet 0
+    '#EDA249', // Planet 1
+    '#6D2ED5', // Planet 2
+    '#D14C32', // Planet 3
+    '#D83A34', // Planet 4
+    '#CD5120', // Planet 5
+    '#1EC1A2', // Planet 6
+    '#2D68F0'  // Planet 7 and beyond
+  ];
+  
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  
 
  useEffect( () => {
   window.addEventListener('resize',function(){
@@ -52,7 +62,8 @@ function utils (num) {
     borderColor: windowWidth < 670 ? color : 'rgba(255, 255, 255, .4)',
     // backgroundColor: windowWidth > 670 ? color : 'transparent'
     // borderColor:color
-   
+    
+    backgroundColor: colors[num]
    }
    const pRef = useRef(null)
  
