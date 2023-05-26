@@ -463,11 +463,6 @@ ul li::before{
     margin-top: 0;
   }
 
-
-
-
-
-
 }
 
 
@@ -573,4 +568,15 @@ ul li::before{
   }
 
   
+}
+
+.button {
+  margin: 1rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: transparent;
+  color: white;
 }
