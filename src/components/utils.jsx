@@ -2,37 +2,52 @@ import { useRef, useState, useEffect } from "react";
 import data from "../data";
 import icon from "../assets/icon-source.svg";
 
-function Utils(num) {
+function utils(num) {
   const colors = [
-    '#419EBB', // Planet 0
-    '#EDA249', // Planet 1
-    '#6D2ED5', // Planet 2
-    '#D14C32', // Planet 3
-    '#D83A34', // Planet 4
-    '#CD5120', // Planet 5
-    '#1EC1A2', // Planet 6
-    '#2D68F0'  // Planet 7 and beyond
+    "#419EBB", // Planet 0
+    "#EDA249", // Planet 1
+    "#6D2ED5", // Planet 2
+    "#D14C32", // Planet 3
+    "#D83A34", // Planet 4
+    "#CD5120", // Planet 5
+    "#1EC1A2", // Planet 6
+    "#2D68F0", // Planet 7 and beyond
   ];
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    const handleResize = () => {
+    window.addEventListener("resize", function () {
       setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
+    });
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", function () {
+        setWindowWidth(window.innerWidth);
+      });
     };
-  }, []);
+  });
 
-  const color = colors[num];
+  let color = "";
 
-  const buttonRef = useRef(null);
-
-  const [type, setType] = useState("overview");
+  // changing the border color based on the planet
+  if (num === 0) {
+    color = "#419EBB";
+  } else if (num === 1) {
+    color = "#EDA249";
+  } else if (num === 2) {
+    color = "#6D2ED5";
+  } else if (num === 3) {
+    color = "#D14C32";
+  } else if (num === 4) {
+    color = "#D83A34";
+  } else if (num === 5) {
+    color = "#CD5120";
+  } else if (num === 6) {
+    color = "#1EC1A2";
+  } else {
+    color = "#2D68F0";
+  }
 
   const style = {
     borderColor: windowWidth < 670 ? color : "rgba(255, 255, 255, .4)",
@@ -41,8 +56,12 @@ function Utils(num) {
 
     backgroundColor: colors[num],
   };
+  const pRef = useRef(null);
 
-  function imagesRender() {
+  const [type, setType] = useState("overview");
+  const typeChange = useRef(null);
+
+  function imgagesRender() {
     if (type === "structure") {
       return (
         <img src={data[num].images.internal} className="planet--img" alt="" />
@@ -68,9 +87,11 @@ function Utils(num) {
   function handleClick(e) {
     setType(e.target.dataset.type);
 
-    const buttons = buttonRef.current.children;
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].classList.remove("active");
+    let children = typeChange.current.children;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+
+      child.classList.remove("active");
     }
 
     e.target.classList.add("active");
@@ -80,7 +101,7 @@ function Utils(num) {
     <>
       <div className="flex-container">
         <div className="c-cont">
-          {imagesRender()}
+          {imgagesRender()}
 
           <div>
             <div className="p-content">
@@ -100,36 +121,36 @@ function Utils(num) {
                   <img className="icon--source" src={icon} alt="" />
                 </div>
               </div>
-              <div ref={buttonRef} className="planet--extra--info">
-                <button
-                  data-type="overview"
-                  className={`button ${type === "overview" ? "active" : ""}`}
+              <div ref={typeChange} className="planet--extra--info">
+                <p
+                  ref={pRef}
                   style={type === "overview" ? style : {}}
+                  data-type={"overview"}
+                  className="active"
                   onClick={handleClick}
                 >
                   {windowWidth >= 670 && <span>01</span>}
                   Overview
-                </button>
+                </p>
 
-                <button
-                  data-type="structure"
-                  className={`button ${type === "structure" ? "active" : ""}`}
+                <p
+                  ref={pRef}
                   style={type === "structure" ? style : {}}
+                  data-type={"structure"}
                   onClick={handleClick}
                 >
                   {windowWidth >= 670 && <span>02</span>}
                   {windowWidth < 670 ? "Structure" : "Internal Structure"}
-                </button>
-
-                <button
-                  data-type="geology"
-                  className={`button ${type === "geology" ? "active" : ""}`}
+                </p>
+                <p
+                  ref={pRef}
                   style={type === "geology" ? style : {}}
+                  data-type={"geology"}
                   onClick={handleClick}
                 >
                   {windowWidth >= 670 && <span>03</span>}
-                  {windowWidth < 670 ? "Surface" : "Surface Geology"}
-                </button>
+                  {windowWidth < 670 ? "surface" : "surface geology"}
+                </p>
               </div>
             </div>
           </div>
@@ -158,4 +179,4 @@ function Utils(num) {
   );
 }
 
-export default Utils;
+export default utils;
